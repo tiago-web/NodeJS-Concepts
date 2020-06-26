@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 
-// const { uuid } = require("uuidv4");
+const { uuid } = require("uuidv4");
 
 const app = express();
 
@@ -11,23 +11,49 @@ app.use(cors());
 const repositories = [];
 
 app.get("/repositories", (request, response) => {
-  // TODO
+	return response.json(repositories);
 });
 
 app.post("/repositories", (request, response) => {
-  // TODO
+	const { title, url, techs } = request.body;
+
+	const project = {
+		id: uuid(),
+		title,
+		url,
+		techs,
+		likes: 0,
+	};
+
+	repositories.push(project);
+
+	return response.json(project);
 });
 
 app.put("/repositories/:id", (request, response) => {
-  // TODO
+	const { id } = request.params;
+	const { title, url, techs } = request.body;
+
+	const repository = {
+		...repositories[id],
+		title,
+		url,
+		techs,
+	};
+
+	return response.json(repository);
 });
 
 app.delete("/repositories/:id", (request, response) => {
-  // TODO
+	const { id } = request.params;
+
+	repositories.filter((repository, index) => index !== id);
+
+	return response.status(204);
 });
 
 app.post("/repositories/:id/like", (request, response) => {
-  // TODO
+	// TODO
 });
 
 module.exports = app;
